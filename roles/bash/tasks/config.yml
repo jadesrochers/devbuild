@@ -11,41 +11,59 @@
     apt_key:
       keyserver: https://download.docker.com/linux/ubuntu/gpg
       state: present
+    become: yes
+    become_method: sudo
 
   - name: get needed key for R
     apt_key:
       keyserver: keyserver.ubuntu.com
       id: E298A3A825C0D65DFD57CBB651716619E084DAB9
+    become: yes
+    become_method: sudo
 
   - name: get needed key for virtualbox
     apt_key:
       keyserver: https://www.virtualbox.org/download/oracle_vbox.asc
       state: present
+    become: yes
+    become_method: sudo
 
   - name: get needed key for chrome
     apt_key:
       keyserver: https://dl-ssl.google.com/linux/linux_signing_key.pub
       state: present
+    become: yes
+    become_method: sudo
 
   - name: add repo for docker
     apt_repository:
       repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ releasename.stdout }} stable
+    become: yes
+    become_method: sudo
 
   - name: add repo for chrome
     apt_repository:
       repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    become: yes
+    become_method: sudo
 
   - name: add repo for R
     apt_repository:
       repo: deb https://cloud.r-project.org/bin/linux/ubuntu {{ releasename.stdout }}-cran35/
+    become: yes
+    become_method: sudo
 
   - name: add repo for virtualbox
     apt_repository:
       repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ releasename.stdout }} lsb_release -cs contrib
+    become: yes
+    become_method: sudo
 
   - name: add repo for ansible
     apt_repository:
       repo: ppa:ansible/ansible
+    become: yes
+    become_method: sudo
 
   - name: apt update
     apt:
@@ -73,6 +91,8 @@
         - google-chrome-stable
         - docker-ce
         - docker-compose
+    become: yes
+    become_method: sudo
 
   - name: Clone fzf package
     git:
