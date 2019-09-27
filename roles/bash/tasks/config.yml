@@ -14,7 +14,7 @@
     become: yes
     become_method: sudo
 
-  - name: apt update
+  - name: install package over network tools
     apt:
       name:
         - apt-transport-https
@@ -26,9 +26,7 @@
 
 
   - name: get needed key for Docker
-    apt_key:
-      keyserver: https://download.docker.com/linux/ubuntu/gpg
-      state: present
+    command: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
     become: yes
     become_method: sudo
 
