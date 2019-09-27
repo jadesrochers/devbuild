@@ -7,6 +7,24 @@
   - debug:
       msg: "The release is: {{ releasename }}"
 
+  - name: apt update
+    apt:
+      update_cache: yes
+      upgrade: dist
+    become: yes
+    become_method: sudo
+
+  - name: apt update
+    apt:
+      name:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+    become: yes
+    become_method: sudo
+
+
   - name: get needed key for Docker
     apt_key:
       keyserver: https://download.docker.com/linux/ubuntu/gpg
@@ -76,7 +94,6 @@
   - name: Install some key packages I use
     apt:
       name:
-        - curl
         - vim
         - gdebi-core
         - git
