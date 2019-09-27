@@ -26,7 +26,7 @@
 
 
   - name: get needed key for Docker
-    command: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+    command: "curl -L https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
     become: yes
     become_method: sudo
 
