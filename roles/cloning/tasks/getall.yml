@@ -14,11 +14,11 @@
       - { repo: "https://github.com/jadesrochers/functionalmonads.git"   , dest: "{{ home }}/dev/javascript/functionalmonads"  }
       - { repo: "https://github.com/jadesrochers/filereworker.git"   , dest: "{{ home }}/dev/javascript/filereworker"  }
       - { repo: "https://github.com/jadesrochers/checksettings.git"   , dest: "{{ home }}/dev/javascript/checksettings"  }
-      - { repo: "https://github.com/jadesrochers/personal_site.git"   , dest: "{{ home }}/dev/javascript/react/mysite"  }
-      - { repo: "https://github.com/jadesrochers/ansible_kubernetes_digitalocean.git"   , dest: "{{ home }}/dev/ansible/kubernetes_cluster"  }
+      - { repo: "https://github.com/jadesrochers/personal_site.git"   , dest: "{{ home }}/dev/javascript/react/personal_site"  }
+      - { repo: "https://github.com/jadesrochers/ansible_kubernetes_digitalocean.git"   , dest: "{{ home }}/dev/ansible/ansible_kubernetes_digitalocean"  }
       - { repo: "https://github.com/jadesrochers/shellscripts.git"   , dest: "{{ home }}/dev/shellscripts"  }
       - { repo: "https://github.com/jadesrochers/Tutorial_Notes.git"   , dest: "{{ home }}/Tutorial_Notes"  }
       - { repo: "https://github.com/jadesrochers/General_Notes.git"   , dest: "{{ home }}/General_Notes"  }
-      - { repo: "https://github.com/jadesrochers/zillowdata_todb.git"   , dest: "{{ home }}/dev/javascript/zilldata_todb"  }
+      - { repo: "https://github.com/jadesrochers/zillowdata_todb.git"   , dest: "{{ home }}/dev/javascript/zillowdata_todb"  }
 
 

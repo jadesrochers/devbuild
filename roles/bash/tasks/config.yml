@@ -1,5 +1,60 @@
 ---
 
+  - name: get the current release
+    command: lsb_release -cs
+    register: releasename
+
+  - debug:
+      msg: "The release is: {{ releasename }}"
+
+  - name: get needed key for Docker
+    apt_key:
+      keyserver: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: get needed key for R
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: E298A3A825C0D65DFD57CBB651716619E084DAB9
+
+  - name: get needed key for virtualbox
+    apt_key:
+      keyserver: https://www.virtualbox.org/download/oracle_vbox.asc
+      state: present
+
+  - name: get needed key for chrome
+    apt_key:
+      keyserver: https://dl-ssl.google.com/linux/linux_signing_key.pub
+      state: present
+
+  - name: add repo for docker
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ releasename.stdout }} stable
+
+  - name: add repo for chrome
+    apt_repository:
+      repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+
+  - name: add repo for R
+    apt_repository:
+      repo: deb https://cloud.r-project.org/bin/linux/ubuntu {{ releasename.stdout }}-cran35/
+
+  - name: add repo for virtualbox
+    apt_repository:
+      repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ releasename.stdout }} lsb_release -cs contrib
+
+  - name: add repo for ansible
+    apt_repository:
+      repo: ppa:ansible/ansible
+
+  - name: apt update
+    apt:
+      update_cache: yes
+      upgrade: dist
+
+# git needs to be installed to get this playbook,
+# so you should set it up passwordless for private repos
+# so that this will run without incident.
   - name: Install some key packages I use
     apt:
       name:
@@ -7,11 +62,17 @@
         - vim
         - gdebi-core
         - git
+        - ansible
         - nautilus-dropbox
         - gnome-tweak-tool
         - gnome-shell-extensions
         - chrome-gnome-shell
         - python3-dev
+        - virtualbox-6.0
+        - r-base
+        - google-chrome-stable
+        - docker-ce
+        - docker-compose
 
   - name: Clone fzf package
     git:
@@ -28,21 +89,26 @@
       mode: 0755
       path: "{{ item }}"
     with_items:
-      - "{{ home }}/.vim/pack/features/start/vim-fugitive"
-      - "{{ home }}/.vim/pack/codesyntax/start/ale"
-      - "{{ home }}/dev/javascript/mongosimple"
-      - "{{ home }}/dev/javascript/streams"
-      - "{{ home }}/dev/javascript/subprocess"
-      - "{{ home }}/dev/javascript/datapulse"
-      - "{{ home }}/dev/javascript/fpstreamline"
-      - "{{ home }}/dev/javascript/functionalmonads"
-      - "{{ home }}/dev/javascript/filereworker"
-      - "{{ home }}/dev/javascript/checksettings"
-      - "{{ home }}/dev/javascript/react/mysite"
+      - "{{ home }}/.vim/pack/features/start"
+      - "{{ home }}/.vim/pack/codesyntax/start"
+      - "{{ home }}/.vim/pack/colors/opt"
+      - "{{ home }}/dev/javascript"
+      - "{{ home }}/dev/javascript/react"
       - "{{ home }}/dev/ansible/kubernetes_cluster"
       - "{{ home }}/dev/shellscripts"
       - "{{ home }}/General_Notes"
       - "{{ home }}/Tutorial_Notes"
+
+  - name: remove some directories
+    file:
+      state: absent
+    with_items:
+      - "{{ home }}/Documents"
+      - "{{ home }}/Music"
+      - "{{ home }}/Public"
+      - "{{ home }}/Templates"
+      - "{{ home }}/Videos"
+      - "{{ home }}/Pictures"
 
   - name: Create the admin group and join the user to it
     command: groupadd admin && adduser "{{ user }}" admin
@@ -55,23 +121,28 @@
       line: "{{ item }}"
       state: present
     with_items:
-      - "# Members of the admin group may gain root privileges"
+      - "# Members of the admin group may gain root privileges without pass"
       - "%admin ALL=(ALL) NOPASSWD:ALL"
     become: yes
     become_method: sudo
 
-  - name: Change the keyboard map so caps lock is control
-    command: update-alternatives --config editor
-    become: yes
-    become_method: sudo
+  - name: Get the bash and vim files from my repo for these
+    command: git init && git remote add origin 'https://github.com/jadesrochers/shell_vim_config.git'
 
-  - name: transfer the bash config files to correct locations
-    copy:
-      src: "{{ item }}"
-      force: yes
-      dest: "{{ home }}"
-    with_fileglob:
-       - roles/bash/files/.bash*
+  - name: Get the bash and vim files from my repo for these
+    command: git fetch && git checkout origin/master -ft
+
+  - name: Add configuration to make the default editor vim
+    lineinfile:
+      path: "{{ home }}/.bashrc"
+      line: "{{ item }}"
+      state: present
+    with_items:
+      - 'export VISUAL=vim'
+      - 'export EDITOR="$VISUAL"'
+
+  - name: Change the keyboard map so caps lock is control
+    command: setxkbmap -option ctrl:nocaps
 
   - name: Install fzf fuzzy finder. Should add its own line to .bashrc.
     command: "{{ home }}/.fzf/install"
