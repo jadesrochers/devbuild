@@ -1,0 +1,104 @@
+---
+
+  - name: Install some key packages I use
+    apt:
+      name:
+        - curl
+        - vim
+        - gdebi-core
+        - git
+        - nautilus-dropbox
+        - gnome-tweak-tool
+        - gnome-shell-extensions
+        - chrome-gnome-shell
+        - python3-dev
+
+  - name: Clone fzf package
+    git:
+      clone: yes
+      repo: https://github.com/junegunn/fzf.git
+      dest: ~/.fzf
+
+  - name: Get dropbox started up. Will still need to login.
+    command: dropbox start -i && dropbox autostart y
+
+  - name: Create some directories
+    file:
+      state: directory
+      mode: 0755
+      path: "{{ item }}"
+    with_items:
+      - "{{ home }}/.vim/pack/features/start/vim-fugitive"
+      - "{{ home }}/.vim/pack/codesyntax/start/ale"
+      - "{{ home }}/dev/javascript/mongosimple"
+      - "{{ home }}/dev/javascript/streams"
+      - "{{ home }}/dev/javascript/subprocess"
+      - "{{ home }}/dev/javascript/datapulse"
+      - "{{ home }}/dev/javascript/fpstreamline"
+      - "{{ home }}/dev/javascript/functionalmonads"
+      - "{{ home }}/dev/javascript/filereworker"
+      - "{{ home }}/dev/javascript/checksettings"
+      - "{{ home }}/dev/javascript/react/mysite"
+      - "{{ home }}/dev/ansible/kubernetes_cluster"
+      - "{{ home }}/dev/shellscripts"
+      - "{{ home }}/General_Notes"
+      - "{{ home }}/Tutorial_Notes"
+
+  - name: Create the admin group and join the user to it
+    command: groupadd admin && adduser "{{ user }}" admin
+    become: yes
+    become_method: sudo
+
+  - name: Configure sudoers to have nopasswd use of sudo for admin group
+    lineinfile:
+      path: /etc/sudoers
+      line: "{{ item }}"
+      state: present
+    with_items:
+      - "# Members of the admin group may gain root privileges"
+      - "%admin ALL=(ALL) NOPASSWD:ALL"
+    become: yes
+    become_method: sudo
+
+  - name: Change the keyboard map so caps lock is control
+    command: update-alternatives --config editor
+    become: yes
+    become_method: sudo
+
+  - name: transfer the bash config files to correct locations
+    copy:
+      src: "{{ item }}"
+      force: yes
+      dest: "{{ home }}"
+    with_fileglob:
+       - roles/bash/files/.bash*
+
+  - name: Install fzf fuzzy finder. Should add its own line to .bashrc.
+    command: "{{ home }}/.fzf/install"
+
+  - name: Add a default keyboard file at /etc/default/keyboard
+    copy:
+      src: keyboard
+      force: yes
+      dest: /etc/default
+    become: yes
+    become_method: sudo
+
+  - name: Add the .bashrc and .bash_profile
+    copy:
+      src: "{{ item }}"
+      force: yes
+      dest: "{{ home }}"
+    with_fileglob:
+       - roles/bash/files/.bash*
+    become: yes
+    become_method: sudo
+
+  - name: Add .vimrc to ~/
+    copy:
+      src: .vimrc
+      force: yes
+      dest: "{{ home }}"
+
+  - name: Source the .bashrc to finish up this part of config
+    command: source ~/.bashrc

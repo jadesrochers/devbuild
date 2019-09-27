@@ -1,0 +1,20 @@
+---
+
+  - name: Create the admin group and join the user to it
+    command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+  - name: install a recent node version, bundles npm with it.
+    command: nvm install 12.10
+
+  - name: Set this node version as default when all shells start
+    command: nvm alias default 12.10
+
+  - name: Install some npm packages globally
+    npm:
+      name: "{{ item }}"
+      global: yes
+    with_items:
+      - create-react-app
+      - eslint
+      - npm-check-updates
+      - typescript

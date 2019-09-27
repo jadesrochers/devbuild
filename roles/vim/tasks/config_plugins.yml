@@ -1,0 +1,26 @@
+---
+
+  - name: Copy the script to download/update all vim git packages.
+    copy:
+      src: vimplug_update.sh
+      force: yes
+      dest: /usr/local/bin
+      group: "{{ username }}"
+    become: yes
+    become_method: sudo
+
+  - name: Run the vimplug_update script to install plugins.
+    command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+  - name: Set the path for fzf, which I install in $HOME earlier in setup.
+    lineinfile:
+      path: "{{ home }}/.vimrc"
+      line: "{{ item }}"
+      state: present
+    with_items:
+      - '" fzf was installed separately, put on path'
+      - set rtp+=~/.fzf
+
+  - name: Install the compile portion of YouCompleteMe
+    command: ~/.vim/pack/codesyntax/start/youcompleteme/install.py
+

@@ -1,0 +1,42 @@
+---
+
+## set up shell environment, some packages, keyboard
+- hosts: 127.0.0.1
+  gather_facts: no
+  tasks:
+    - name: include bash setup role
+      import_role:
+        name: bash
+        tasks_from: config
+      tags: [ bash ]
+
+## get javascript/node dev env setup with nvm
+- hosts: 127.0.0.1
+  gather_facts: no
+  tasks:
+    - name: include javascript setup role
+      import_role:
+        name: javascript
+        tasks_from: setup
+      tags: [ javascript ]
+
+## get javascript/node dev env setup with nvm
+- hosts: 127.0.0.1
+  gather_facts: no
+  tasks:
+    - name: include vim setup role
+      import_role:
+        name: vim
+        tasks_from: config_plugins
+      tags: [ vim ]
+
+## get javascript/node dev env setup with nvm
+- hosts: 127.0.0.1
+  gather_facts: no
+  tasks:
+    - name: include repo downloads
+      import_role:
+        name: cloning
+        tasks_from: getall
+      tags: [ clone_repos ]
+
