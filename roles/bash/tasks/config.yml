@@ -211,9 +211,11 @@
       dest: /etc/default
 
   - name: configure git
-    shell: |
-      git config --global user.name "jadesrochers" && 
+    shell: >
+      git config --global user.name jad && 
       git config --global user.email jadesrochers@gmail.com && 
       git config --global core.editor vim && 
       git config --global merge.tool vimdiff
+    become: yes
+    become_user: jad
     tags: [ config ]
