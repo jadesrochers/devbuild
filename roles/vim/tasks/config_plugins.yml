@@ -4,9 +4,10 @@
       src: vimplug_update.sh
       force: yes
       dest: "{{ home }}"
+      mode: 0754
 
   - name: Run the vimplug_update script to install plugins.
-    shell: bash -ic "vimplug_update.sh"
+    shell: bash -ic {{ home }}/vimplug_update.sh
 
   - name: Set the path for fzf, which I install in $HOME earlier in setup.
     lineinfile:
