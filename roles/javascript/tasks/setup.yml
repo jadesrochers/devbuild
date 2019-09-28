@@ -1,7 +1,7 @@
 ---
 
-  - name: Create the admin group and join the user to it
-    command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+  - name: Get nvm installer and pass it to shell
+    shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
   - name: install a recent node version, bundles npm with it.
     command: nvm install 12.10

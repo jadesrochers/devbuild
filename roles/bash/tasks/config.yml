@@ -218,4 +218,3 @@
       git config --global merge.tool vimdiff
     become: yes
     become_user: jad
-    tags: [ config ]
