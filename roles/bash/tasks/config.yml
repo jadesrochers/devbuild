@@ -202,7 +202,7 @@
     shell: "{{ home }}/.fzf/install"
     become: yes
     become_user: jad
-    when: fzfgrep.stdout != /home/jad/.bashrc
+    when: fzfgrep.stdout|length > 3
     tags: [ pucha ]
 
   - name: Add a default keyboard file at /etc/default/keyboard
