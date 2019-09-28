@@ -202,8 +202,7 @@
     shell: "{{ home }}/.fzf/install"
     become: yes
     become_user: jad
-    when: fzfgrep.stdout|length > 3
-    tags: [ pucha ]
+    when: fzfgrep.stdout|length == 0
 
   - name: Add a default keyboard file at /etc/default/keyboard
     copy:
@@ -211,5 +210,10 @@
       force: yes
       dest: /etc/default
 
-  - name: Source the .bashrc to finish up this part of config
-    command: source {{ home }}/.bashrc
+  - name: configure git
+    shell: |
+      git config --global user.name "jadesrochers" && 
+      git config --global user.email jadesrochers@gmail.com && 
+      git config --global core.editor vim && 
+      git config --global merge.tool vimdiff
+    tags: [ config ]
