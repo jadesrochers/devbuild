@@ -42,6 +42,11 @@
     become: yes
     become_method: sudo
 
+  - name: and the other vb key
+    shell: curl -L https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
+    become: yes
+    become_method: sudo
+
   - name: get needed key for chrome
     shell: curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     become: yes
