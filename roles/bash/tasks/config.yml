@@ -65,21 +65,41 @@
 # git needs to be installed to get this playbook,
 # so you should set it up passwordless for private repos
 # so that this will run without incident.
-  - name: Install some key packages I use
+  - name: Install vim,r, gdebi
     apt:
       name:
         - vim
         - gdebi-core
         - git
         - ansible
+        - r-base
+
+  - name: Install dropbox, gnome extension tools
+    apt:
+      name:
         - nautilus-dropbox
         - gnome-tweak-tool
         - gnome-shell-extensions
         - chrome-gnome-shell
+
+  - name: Install python3-dev package
+    apt:
+      name:
         - python3-dev
+
+  - name: Install virtualbox
+    apt:
+      name:
         - virtualbox-6.0
-        - r-base
+
+  - name: Install chrome for node debugging
+    apt:
+      name:
         - google-chrome-stable
+
+  - name: Install docker
+    apt:
+      name:
         - docker-ce
         - docker-compose
 
@@ -114,6 +134,7 @@
 
   - name: remove some directories
     file:
+      path: "{{ item }}"
       state: absent
     with_items:
       - "{{ home }}/Documents"
@@ -125,8 +146,6 @@
 
   - name: Create the admin group and join the user to it
     command: groupadd admin && adduser "{{ user }}" admin
-    become: yes
-    become_method: sudo
 
   - name: Configure sudoers to have nopasswd use of sudo for admin group
     lineinfile:
@@ -136,13 +155,13 @@
     with_items:
       - "# Members of the admin group may gain root privileges without pass"
       - "%admin ALL=(ALL) NOPASSWD:ALL"
-    become: yes
-    become_method: sudo
 
   - name: Get the bash and vim files from my repo for these
     command: git init && git remote add origin 'https://github.com/jadesrochers/shell_vim_config.git'
     args:
       chdir: "{{ home }}"
+    become: yes
+    become_user: jad
 
   - name: Get the bash and vim files from my repo for these
     command: git fetch && git checkout origin/master -ft
@@ -173,8 +192,6 @@
       src: keyboard
       force: yes
       dest: /etc/default
-    become: yes
-    become_method: sudo
 
   - name: Source the .bashrc to finish up this part of config
     command: source ~/.bashrc
