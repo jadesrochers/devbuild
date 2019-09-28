@@ -9,6 +9,9 @@
         name: bash
         tasks_from: config
       tags: [ bash ]
+  become: yes
+  become_method: sudo
+
 
 ## get javascript/node dev env setup with nvm
 - hosts: 127.0.0.1

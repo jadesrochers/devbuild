@@ -11,8 +11,6 @@
     apt:
       update_cache: yes
       upgrade: dist
-    become: yes
-    become_method: sudo
 
   - name: install package over network tools
     apt:
@@ -21,66 +19,43 @@
         - ca-certificates
         - curl
         - software-properties-common
-    become: yes
-    become_method: sudo
-
 
   - name: get needed key for Docker
     shell: curl -L https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    become: yes
-    become_method: sudo
 
   - name: get needed key for R
     apt_key:
       keyserver: keyserver.ubuntu.com
       id: E298A3A825C0D65DFD57CBB651716619E084DAB9
-    become: yes
-    become_method: sudo
 
   - name: get needed key for virtualbox
     shell: curl -L https://www.virtualbox.org/download/oracle_vbox.asc | sudo apt-key add -
-    become: yes
-    become_method: sudo
 
   - name: and the other vb key
     shell: curl -L https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
-    become: yes
-    become_method: sudo
 
   - name: get needed key for chrome
     shell: curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    become: yes
-    become_method: sudo
 
   - name: add repo for docker
     apt_repository:
       repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ releasename.stdout }} stable
-    become: yes
-    become_method: sudo
 
   - name: add repo for chrome
     apt_repository:
       repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
-    become: yes
-    become_method: sudo
 
   - name: add repo for R
     apt_repository:
       repo: deb https://cloud.r-project.org/bin/linux/ubuntu {{ releasename.stdout }}-cran35/
-    become: yes
-    become_method: sudo
 
   - name: add repo for virtualbox
     apt_repository:
       repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ releasename.stdout }} contrib
-    become: yes
-    become_method: sudo
 
   - name: add repo for ansible
     apt_repository:
       repo: ppa:ansible/ansible
-    become: yes
-    become_method: sudo
 
   - name: apt update
     apt:
@@ -107,14 +82,14 @@
         - google-chrome-stable
         - docker-ce
         - docker-compose
-    become: yes
-    become_method: sudo
 
   - name: Clone fzf package
     git:
       clone: yes
       repo: https://github.com/junegunn/fzf.git
       dest: ~/.fzf
+    become: yes
+    become_user: jad
 
   - name: Get dropbox started up. Will still need to login.
     command: dropbox start -i && dropbox autostart y
@@ -134,6 +109,8 @@
       - "{{ home }}/dev/shellscripts"
       - "{{ home }}/General_Notes"
       - "{{ home }}/Tutorial_Notes"
+    become: yes
+    become_user: jad
 
   - name: remove some directories
     file:
@@ -164,9 +141,13 @@
 
   - name: Get the bash and vim files from my repo for these
     command: git init && git remote add origin 'https://github.com/jadesrochers/shell_vim_config.git'
+      chdir: "{{ home }}"
 
   - name: Get the bash and vim files from my repo for these
     command: git fetch && git checkout origin/master -ft
+      chdir: "{{ home }}"
+    become: yes
+    become_user: jad
 
   - name: Add configuration to make the default editor vim
     lineinfile:
@@ -182,6 +163,8 @@
 
   - name: Install fzf fuzzy finder. Should add its own line to .bashrc.
     command: "{{ home }}/.fzf/install"
+    become: yes
+    become_user: jad
 
   - name: Add a default keyboard file at /etc/default/keyboard
     copy:
@@ -190,22 +173,6 @@
       dest: /etc/default
     become: yes
     become_method: sudo
-
-  - name: Add the .bashrc and .bash_profile
-    copy:
-      src: "{{ item }}"
-      force: yes
-      dest: "{{ home }}"
-    with_fileglob:
-       - roles/bash/files/.bash*
-    become: yes
-    become_method: sudo
-
-  - name: Add .vimrc to ~/
-    copy:
-      src: .vimrc
-      force: yes
-      dest: "{{ home }}"
 
   - name: Source the .bashrc to finish up this part of config
     command: source ~/.bashrc
