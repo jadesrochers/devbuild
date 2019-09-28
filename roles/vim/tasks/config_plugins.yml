@@ -18,6 +18,10 @@
       - '" fzf was installed separately, put on path'
       - set rtp+=~/.fzf
 
+  - name: Install YCM dependencies
+    shell: git submodule update --init --recursive
+    chdir: {{ home }}/.vim/pack/codesyntax/start/youcompleteme
+
   - name: Install the compile portion of YouCompleteMe
     shell: "{{ home }}/.vim/pack/codesyntax/start/youcompleteme/install.py"
 
