@@ -4,13 +4,10 @@
     copy:
       src: vimplug_update.sh
       force: yes
-      dest: /usr/local/bin
-      group: "{{ username }}"
-    become: yes
-    become_method: sudo
+      dest: "{{ home }}"
 
   - name: Run the vimplug_update script to install plugins.
-    command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+    shell: bash -ic "vimplug_update.sh"
 
   - name: Set the path for fzf, which I install in $HOME earlier in setup.
     lineinfile:
@@ -22,5 +19,5 @@
       - set rtp+=~/.fzf
 
   - name: Install the compile portion of YouCompleteMe
-    command: ~/.vim/pack/codesyntax/start/youcompleteme/install.py
+    shell: "{{ home }}/.vim/pack/codesyntax/start/youcompleteme/install.py
 
