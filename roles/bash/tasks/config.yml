@@ -39,13 +39,11 @@
 
   - name: get needed key for virtualbox
     shell: https://www.virtualbox.org/download/oracle_vbox.asc | sudo apt-key add -
-      state: present
     become: yes
     become_method: sudo
 
   - name: get needed key for chrome
     shell: curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-      state: present
     become: yes
     become_method: sudo
 
