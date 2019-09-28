@@ -146,6 +146,25 @@
     become: yes
     become_method: sudo
 
+  - name: Configure sudoers to have nopasswd use of sudo for admin group
+    lineinfile:
+      path: /etc/sudoers
+      line: "{{ item }}"
+      state: present
+    with_items:
+      - "# Members of the admin group may gain root privileges without pass"
+      - "%admin ALL=(ALL) NOPASSWD:ALL"
+
+  - name: Set NOPASS sudo for any member of sudo-nopass group
+    lineinfile:
+      path: /etc/sudoers
+      line: "{{ item }}"
+      state: present
+    with_items:
+      - "# Members of the sudo-nopass group may use sudo without password"
+      - "%sudo-nopass ALL=(ALL) NOPASSWD:ALL"
+    tags: [ sudoers ]
+
   - name: Create the admin group
     shell: groupadd -f sudo-nopass
     ignore_errors: yes
@@ -161,25 +180,11 @@
     ignore_errors: yes
     tags: [ sudoers ]
 
-  - name: Configure sudoers to have nopasswd use of sudo for admin group
-    lineinfile:
-      path: /etc/sudoers
-      line: "{{ item }}"
-      state: present
-    with_items:
-      - "# Members of the admin group may gain root privileges without pass"
-      - "%admin ALL=(ALL) NOPASSWD:ALL"
+  - name: restart sudo to make sure changes take effect
+    systemd:
+      daemon_reload: yes
     tags: [ sudoers ]
 
-  - name: Remove the default admin permission that override what I inserted
-    lineinfile:
-      path: /etc/sudoers
-      line: "{{ item }}"
-      state: absent
-    with_items:
-      - "# Members of the admin group may gain root privileges"
-      - "%sudo-nopass ALL=(ALL) ALL"
-    tags: [ sudoers ]
 
   - name: check if rules file exists
     stat:
