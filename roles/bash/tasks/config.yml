@@ -203,6 +203,7 @@
     become: yes
     become_user: jad
     when: fzfgrep.stdout != /home/jad/.bashrc
+    tags: [ pucha ]
 
   - name: Add a default keyboard file at /etc/default/keyboard
     copy:
