@@ -82,6 +82,11 @@
       name:
         - python3-dev
 
+  - name: Install cmake
+    apt:
+      name:
+        - cmake
+
   - name: Install virtualbox
     apt:
       name:
@@ -140,7 +145,11 @@
       - "{{ home }}/Pictures"
 
   - name: Create the admin group and join the user to it
-    shell: groupadd -f admin && adduser "{{ username }}" admin
+    shell: groupadd -f admin
+    ignore_errors: yes
+
+  - name: Create the admin group and join the user to it
+    shell: adduser "{{ username }}" admin
     ignore_errors: yes
 
   - name: Configure sudoers to have nopasswd use of sudo for admin group
