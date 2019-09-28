@@ -67,7 +67,7 @@
 
   - name: add repo for virtualbox
     apt_repository:
-      repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ releasename.stdout }} lsb_release -cs contrib
+      repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ releasename.stdout }} contrib
     become: yes
     become_method: sudo
 
