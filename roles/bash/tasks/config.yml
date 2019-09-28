@@ -111,9 +111,6 @@
     become: yes
     become_user: jad
 
-  - name: Get dropbox started up. Will still need to login.
-    command: dropbox start -i && dropbox autostart y
-
   - name: Create some directories
     file:
       state: directory
@@ -146,15 +143,6 @@
     become: yes
     become_method: sudo
 
-  - name: Configure sudoers to have nopasswd use of sudo for admin group
-    lineinfile:
-      path: /etc/sudoers
-      line: "{{ item }}"
-      state: present
-    with_items:
-      - "# Members of the admin group may gain root privileges without pass"
-      - "%admin ALL=(ALL) NOPASSWD:ALL"
-
   - name: Set NOPASS sudo for any member of sudo-nopass group
     lineinfile:
       path: /etc/sudoers
@@ -163,28 +151,22 @@
     with_items:
       - "# Members of the sudo-nopass group may use sudo without password"
       - "%sudo-nopass ALL=(ALL) NOPASSWD:ALL"
-    tags: [ sudoers ]
 
   - name: Create the admin group
     shell: groupadd -f sudo-nopass
     ignore_errors: yes
-    tags: [ sudoers ]
 
   - name: join the user to admin group
     shell: usermod -a -G sudo-nopass "{{ username }}"
     ignore_errors: yes
-    tags: [ sudoers ]
 
   - name: join the user to admin group
     shell: adduser "{{ username }}" sudo-nopass
     ignore_errors: yes
-    tags: [ sudoers ]
 
   - name: restart sudo to make sure changes take effect
     systemd:
       daemon_reload: yes
-    tags: [ sudoers ]
-
 
   - name: check if rules file exists
     stat:
@@ -213,8 +195,8 @@
       line: "{{ item }}"
       state: present
     with_items:
-      - 'export VISUAL=vim'
-      - 'export EDITOR="$VISUAL"'
+      - export VISUAL={{ editor }}
+      - export EDITOR="$VISUAL"
 
   - name: Change the keyboard map so caps lock is control
     command: setxkbmap -option ctrl:nocaps
@@ -237,9 +219,9 @@
 
   - name: configure git
     shell: >
-      git config --global user.name jad && 
-      git config --global user.email jadesrochers@gmail.com && 
-      git config --global core.editor vim && 
+      git config --global user.name {{ username }} && 
+      git config --global user.email {{ email  }} && 
+      git config --global core.editor {{ editor }} && 
       git config --global merge.tool vimdiff
     become: yes
     become_user: jad

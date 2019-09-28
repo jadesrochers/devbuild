@@ -1,4 +1,13 @@
 # define the user and home
 ansible_python_interpreter: /usr/bin/python3
 username: jad
+editor: vim
+email: jadesrochers@gmail.com
 home: /home/jad
+node_version: 12.10
+node_globals:
+  - create-react-app
+  - eslint
+  - typescript
+  - npm-check-updates
+
