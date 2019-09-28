@@ -141,10 +141,12 @@
 
   - name: Get the bash and vim files from my repo for these
     command: git init && git remote add origin 'https://github.com/jadesrochers/shell_vim_config.git'
+    args:
       chdir: "{{ home }}"
 
   - name: Get the bash and vim files from my repo for these
     command: git fetch && git checkout origin/master -ft
+    args:
       chdir: "{{ home }}"
     become: yes
     become_user: jad
