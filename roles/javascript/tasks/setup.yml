@@ -4,10 +4,10 @@
     shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
   - name: install a recent node version, bundles npm with it.
-    shell: "{{ home }}/.nvm/nvm install 12.10"
+    shell: bash -ic "nvm install 12.10"
 
   - name: Set this node version as default when all shells start
-    shell: "{{ home }}/.nvm/nvm alias default 12.10"
+    shell: bash -ic "nvm alias default 12.10"
 
   - name: Install some npm packages globally
     npm:
