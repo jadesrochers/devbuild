@@ -140,7 +140,8 @@
       - "{{ home }}/Pictures"
 
   - name: Create the admin group and join the user to it
-    shell: groupadd admin && adduser "{{ username }}" admin
+    shell: groupadd -f admin && adduser "{{ username }}" admin
+    ignore_errors: yes
 
   - name: Configure sudoers to have nopasswd use of sudo for admin group
     lineinfile:
@@ -160,12 +161,18 @@
       - "# Members of the admin group may gain root privileges"
       - "%admin ALL=(ALL) ALL"
 
+  - name: check if rules file exists
+    stat:
+      path: "{{ home }}/.git"
+    register: homegit
+
   - name: Get the bash and vim files from my repo for these
     shell: git init && git remote add origin 'https://github.com/jadesrochers/shell_vim_config.git'
     args:
       chdir: "{{ home }}"
     become: yes
     become_user: jad
+    when: homegit.stat.exists == false
 
   - name: Get the bash and vim files from my repo for these
     shell: git fetch && git checkout origin/master -ft
@@ -173,6 +180,7 @@
       chdir: "{{ home }}"
     become: yes
     become_user: jad
+    when: homegit.stat.exists == false
 
   - name: Add configuration to make the default editor vim
     lineinfile:
@@ -186,10 +194,15 @@
   - name: Change the keyboard map so caps lock is control
     command: setxkbmap -option ctrl:nocaps
 
+  - name: Check if fzf appears to have been installed
+    shell: grep -E -i -l "fzf" ~/.bashrc
+    register: fzfgrep
+
   - name: Install fzf fuzzy finder. Should add its own line to .bashrc.
     shell: "{{ home }}/.fzf/install"
     become: yes
     become_user: jad
+    when: fzfgrep.stdout != {{ home }}/.bashrc
 
   - name: Add a default keyboard file at /etc/default/keyboard
     copy:
