@@ -140,7 +140,7 @@
       - "{{ home }}/Pictures"
 
   - name: Create the admin group and join the user to it
-    command: groupadd admin && adduser "{{ username }}" admin
+    shell: groupadd admin && adduser "{{ username }}" admin
 
   - name: Configure sudoers to have nopasswd use of sudo for admin group
     lineinfile:
@@ -152,14 +152,14 @@
       - "%admin ALL=(ALL) NOPASSWD:ALL"
 
   - name: Get the bash and vim files from my repo for these
-    command: git init && git remote add origin 'https://github.com/jadesrochers/shell_vim_config.git'
+    shell: git init && git remote add origin 'https://github.com/jadesrochers/shell_vim_config.git'
     args:
       chdir: "{{ home }}"
     become: yes
     become_user: jad
 
   - name: Get the bash and vim files from my repo for these
-    command: git fetch && git checkout origin/master -ft
+    shell: git fetch && git checkout origin/master -ft
     args:
       chdir: "{{ home }}"
     become: yes
@@ -178,7 +178,7 @@
     command: setxkbmap -option ctrl:nocaps
 
   - name: Install fzf fuzzy finder. Should add its own line to .bashrc.
-    command: "{{ home }}/.fzf/install"
+    shell: "{{ home }}/.fzf/install"
     become: yes
     become_user: jad
 
