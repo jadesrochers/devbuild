@@ -3,18 +3,18 @@
   - name: Get nvm installer and pass it to shell
     shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
+  # MUST use bash as regular user to source nvm
   - name: install a recent node version, bundles npm with it.
     shell: bash -ic "nvm install 12.10"
 
   - name: Set this node version as default when all shells start
     shell: bash -ic "nvm alias default 12.10"
 
-  - name: Install some npm packages globally
-    npm:
-      name: "{{ item }}"
-      global: yes
+  - name: Set this node version as default when all shells start
+    shell: bash -ic "npm install --global {{ item }}"
     with_items:
       - create-react-app
       - eslint
-      - npm-check-updates
       - typescript
+      - npm-check-updates
+
