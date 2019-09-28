@@ -38,15 +38,13 @@
     become_method: sudo
 
   - name: get needed key for virtualbox
-    apt_key:
-      keyserver: https://www.virtualbox.org/download/oracle_vbox.asc
+    shell: https://www.virtualbox.org/download/oracle_vbox.asc | sudo apt-key add -
       state: present
     become: yes
     become_method: sudo
 
   - name: get needed key for chrome
-    apt_key:
-      keyserver: https://dl-ssl.google.com/linux/linux_signing_key.pub
+    shell: curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
       state: present
     become: yes
     become_method: sudo
