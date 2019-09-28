@@ -1,24 +1,10 @@
 ---
+  - name: Get the repos to install
+    include_vars: repolist.yml
 
   - name: Clone all public and private packages I want for dev
     git:
       clone: yes
       repo: "{{ item.repo }}"
       dest: "{{ item.dest }}"
-    with_items:
-      - { repo: "https://github.com/jadesrochers/mongosimple.git"   , dest: "{{ home }}/dev/javascript/mongosimple"  }
-      - { repo: "https://github.com/jadesrochers/streams.git"   , dest: "{{ home }}/dev/javascript/streams"  }
-      - { repo: "https://github.com/jadesrochers/subprocess.git"   , dest: "{{ home }}/dev/javascript/subprocess"  }
-      - { repo: "https://github.com/jadesrochers/datapulse.git"   , dest: "{{ home }}/dev/javascript/datapulse"  }
-      - { repo: "https://github.com/jadesrochers/fpstreamline.git"   , dest: "{{ home }}/dev/javascript/fpstreamline"  }
-      - { repo: "https://github.com/jadesrochers/functionalmonads.git"   , dest: "{{ home }}/dev/javascript/functionalmonads"  }
-      - { repo: "https://github.com/jadesrochers/filereworker.git"   , dest: "{{ home }}/dev/javascript/filereworker"  }
-      - { repo: "https://github.com/jadesrochers/checksettings.git"   , dest: "{{ home }}/dev/javascript/checksettings"  }
-      - { repo: "https://github.com/jadesrochers/personal_site.git"   , dest: "{{ home }}/dev/javascript/react/personal_site"  }
-      - { repo: "https://github.com/jadesrochers/ansible_kubernetes_digitalocean.git"   , dest: "{{ home }}/dev/ansible/ansible_kubernetes_digitalocean"  }
-      - { repo: "https://github.com/jadesrochers/shellscripts.git"   , dest: "{{ home }}/dev/shellscripts"  }
-      - { repo: "https://github.com/jadesrochers/Tutorial_Notes.git"   , dest: "{{ home }}/Tutorial_Notes"  }
-      - { repo: "https://github.com/jadesrochers/General_Notes.git"   , dest: "{{ home }}/General_Notes"  }
-      - { repo: "https://github.com/jadesrochers/zillowdata_todb.git"   , dest: "{{ home }}/dev/javascript/zillowdata_todb"  }
-
-
+    with_items: "{{ install }}"
