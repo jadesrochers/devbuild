@@ -6,6 +6,7 @@ from just a fresh ubuntu install.
 Install the ubuntu system.
 I usually do a light install with the net installer.  
 
+
 #### Need git and ansible to get going -  
 These need to be installed first so you can get the  
 playbook and then run it.

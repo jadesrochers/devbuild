@@ -57,13 +57,13 @@
     apt_repository:
       repo: ppa:ansible/ansible
 
-# git needs to be installed to get this playbook,
 # so you should set it up passwordless for private repos
 # so that this will run without incident.
   - name: Install vim,r, gdebi
     apt:
       name:
         - vim
+        - vim-gtk3
         - gdebi-core
         - git
         - ansible
