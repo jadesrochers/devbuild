@@ -195,7 +195,7 @@
     command: setxkbmap -option ctrl:nocaps
 
   - name: Check if fzf appears to have been installed
-    shell: grep -E -i -l "fzf" ~/.bashrc
+    shell: grep -E -i -l "fzf" {{ home }}/.bashrc
     register: fzfgrep
 
   - name: Install fzf fuzzy finder. Should add its own line to .bashrc.
