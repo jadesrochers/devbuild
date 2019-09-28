@@ -1,5 +1,4 @@
 ---
-
   - name: Copy the script to download/update all vim git packages.
     copy:
       src: vimplug_update.sh
@@ -19,5 +18,5 @@
       - set rtp+=~/.fzf
 
   - name: Install the compile portion of YouCompleteMe
-    shell: "{{ home }}/.vim/pack/codesyntax/start/youcompleteme/install.py
+    shell: "{{ home }}/.vim/pack/codesyntax/start/youcompleteme/install.py"
 
