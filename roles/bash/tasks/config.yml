@@ -38,7 +38,7 @@
     become_method: sudo
 
   - name: get needed key for virtualbox
-    shell: https://www.virtualbox.org/download/oracle_vbox.asc | sudo apt-key add -
+    shell: curl -L https://www.virtualbox.org/download/oracle_vbox.asc | sudo apt-key add -
     become: yes
     become_method: sudo
 
