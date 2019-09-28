@@ -6,7 +6,7 @@
       dest: "{{ home }}"
 
   - name: Run the vimplug_update script to install plugins.
-    shell: bash -ic "vimplug_update.sh"
+    shell: bash -ic {{ home }}/vimplug_update.sh
 
   - name: Set the path for fzf, which I install in $HOME earlier in setup.
     lineinfile:
@@ -16,6 +16,10 @@
     with_items:
       - '" fzf was installed separately, put on path'
       - set rtp+=~/.fzf
+
+  - name: Install YCM dependencies
+    shell: git submodule update --init --recursive
+    chdir: {{ home }}/.vim/pack/codesyntax/start/youcompleteme
 
   - name: Install the compile portion of YouCompleteMe
     shell: "{{ home }}/.vim/pack/codesyntax/start/youcompleteme/install.py"
