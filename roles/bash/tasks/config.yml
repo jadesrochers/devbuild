@@ -151,6 +151,15 @@
       - "# Members of the admin group may gain root privileges without pass"
       - "%admin ALL=(ALL) NOPASSWD:ALL"
 
+  - name: Remove the default admin permission that override what I inserted
+    lineinfile:
+      path: /etc/sudoers
+      line: "{{ item }}"
+      state: absent
+    with_items:
+      - "# Members of the admin group may gain root privileges"
+      - "%admin ALL=(ALL) ALL"
+
   - name: Get the bash and vim files from my repo for these
     shell: git init && git remote add origin 'https://github.com/jadesrochers/shell_vim_config.git'
     args:
@@ -189,4 +198,4 @@
       dest: /etc/default
 
   - name: Source the .bashrc to finish up this part of config
-    command: source ~/.bashrc
+    command: source {{ home }}/.bashrc
