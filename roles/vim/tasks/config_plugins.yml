@@ -24,5 +24,5 @@
       chdir: "{{ home }}/.vim/pack/codesyntax/start/youcompleteme"
 
   - name: Install the compile portion of YouCompleteMe
-    shell: "{{ home }}/.vim/pack/codesyntax/start/youcompleteme/install.py"
+    shell: "python3 {{ home }}/.vim/pack/codesyntax/start/youcompleteme/install.py --ts-completer"
 

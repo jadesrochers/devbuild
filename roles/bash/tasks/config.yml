@@ -195,7 +195,7 @@
       line: "{{ item }}"
       state: present
     with_items:
-      - export VISUAL={{ editor }}
+      - \nexport VISUAL={{ editor }}
       - export EDITOR="$VISUAL"
 
   - name: Change the keyboard map so caps lock is control
@@ -210,6 +210,25 @@
     become: yes
     become_user: jad
     when: fzfgrep.stdout|length == 0
+
+  # the default pod IP pool for calico is 192.168.0.0/16
+  - name: download z.sh from the github repo
+    get_url:
+      url: https://raw.githubusercontent.com/rupa/z/master/z.sh
+      dest: "/usr/local/bin/z.sh"
+
+  - name: change ownership and permission on z.sh
+    file:
+      path: /usr/local/bin/z.sh
+      group: {{ user }}
+      owner: {{ user }}
+      mode: 0754
+
+  - name: Add path to z.sh in bashrc
+    lineinfile:
+      path: "{{ home }}/.bashrc"
+      line: \nsource /usr/local/bin/z.sh
+      state: present
 
   - name: Add a default keyboard file at /etc/default/keyboard
     copy:
