@@ -57,6 +57,10 @@
     apt_repository:
       repo: ppa:ansible/ansible
 
+  - name: add repo for up to date vim, bionic repo version has syntax/error cursor disappear bug from cli
+    apt_repository:
+      repo: ppa:jonathonf/vim
+
 # so you should set it up passwordless for private repos
 # so that this will run without incident.
   - name: Install vim,r, gdebi
@@ -110,6 +114,22 @@
       dest: ~/.fzf
     become: yes
     become_user: jad
+
+ # the default pod IP pool for calico is 192.168.0.0/16
+  - name: download installer for ripgrep
+    get_url:
+      url:  https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
+      dest: "{{ home}}/Downloads/ripgrep_amd64.deb"
+
+  - name: Check if ripgrep is installed
+    command: dpkg-query -W ripgrep
+    register: check_deb
+    failed_when: check_deb.rc > 1
+    changed_when: check_deb.rc == 1
+
+  - name: Install ripgrep from .deb package
+    apt: deb="{{ home }}/Downloads/ripgrep_amd64.deb"
+    when: check_deb.rc == 1
 
   - name: Create some directories
     file:
@@ -206,7 +226,7 @@
     register: fzfgrep
 
   - name: Install fzf fuzzy finder. Should add its own line to .bashrc.
-    shell: "{{ home }}/.fzf/install"
+    shell: "{{ home }}/.fzf/install --all"
     become: yes
     become_user: jad
     when: fzfgrep.stdout|length == 0

@@ -67,7 +67,7 @@ git_update () {
 
 groups=("codesyntax" "features" "colors")
 startoropt=("start" "start" "opt")
-grp1=("https://github.com/w0rp/ale" "https://github.com/valloric/youcompleteme")
+grp1=("https://github.com/w0rp/ale" "https://github.com/valloric/youcompleteme" "https://github.com/sheerun/vim-polyglot", "https://github.com/junegunn/fzf.vim")
 grp2=("https://github.com/itchyny/lightline.vim" "https://github.com/scrooloose/nerdtree" "https://github.com/tpope/vim-commentary" "https://github.com/tpope/vim-fugitive")
 grp3=("https://github.com/ayu-theme/ayu-vim" "https://github.com/morhetz/gruvbox" "https://github.com/arcticicestudio/nord-vim" "https://github.com/drewtempelmeyer/palenight.vim" "https://github.com/altercation/vim-colors-solarized" "https://github.com/rakr/vim-one")
 plugins=(
