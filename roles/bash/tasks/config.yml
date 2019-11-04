@@ -112,6 +112,7 @@
       clone: yes
       repo: https://github.com/junegunn/fzf.git
       dest: ~/.fzf
+      depth: 1
     become: yes
     become_user: jad
 

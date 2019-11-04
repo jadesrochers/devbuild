@@ -1,4 +1,21 @@
 ---
+  - name: determine if coc.nvim is already present
+    stat:
+      path: "{{ home }}/.vim/pack/coc/start/coc.nvim-release"
+    register: nviminstall
+
+  - name: Make sure coc.nvim directory exists
+    file:
+      path: "{{ home }}/.vim/pack/coc/start"
+      state: directory
+      mode: 0755
+
+  - name: download and unpack the coc.nvim extension
+    shell: "curl --fail -L https://github.com/neoclide/coc.nvim/archive/release.tar.gz|tar xzfv -"
+    args:
+      chdir: "{{ home }}/.vim/pack/coc/start"
+    when: nviminstall.state.exists == false
+
   - name: Copy the script to download/update all vim git packages.
     copy:
       src: vimplug_update.sh
@@ -17,12 +34,4 @@
     with_items:
       - '" fzf was installed separately, put on path'
       - set rtp+=~/.fzf
-
-  - name: Install YCM dependencies
-    shell: git submodule update --init --recursive
-    args:
-      chdir: "{{ home }}/.vim/pack/codesyntax/start/youcompleteme"
-
-  - name: Install the compile portion of YouCompleteMe
-    shell: "python3 {{ home }}/.vim/pack/codesyntax/start/youcompleteme/install.py --ts-completer"
 
