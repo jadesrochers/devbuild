@@ -61,17 +61,33 @@
     apt_repository:
       repo: ppa:jonathonf/vim
 
+  - name: add repo for Linux back in time backup utility
+    apt_repository:
+      repo: ppa:bit-team/stable
+
 # so you should set it up passwordless for private repos
 # so that this will run without incident.
-  - name: Install vim,r, gdebi
+  - name: Install vim
     apt:
       name:
         - vim
         - vim-gtk3
+
+  - name: Install gdebi and git
+    apt:
+      name:
         - gdebi-core
         - git
-        - ansible
+
+  - name: Install R
+    apt:
+      name:
         - r-base
+
+  - name: Install ansible
+    apt:
+      name:
+        - ansible
 
   - name: Install dropbox, gnome extension tools
     apt:
@@ -106,6 +122,16 @@
       name:
         - docker-ce
         - docker-compose
+
+  - name: Install Gimp
+    apt:
+      name:
+        - gimp
+
+  - name: Install back-in-time
+    apt:
+      name:
+        - backintime-qt4
 
   - name: Clone fzf package
     git:

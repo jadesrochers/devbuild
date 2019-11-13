@@ -1,33 +1,65 @@
 ---
 
 install:
-      - repo: "https://github.com/jadesrochers/mongosimple.git"
-        dest: "{{ home }}/dev/javascript/mongosimple"
-      - repo: "https://github.com/jadesrochers/streams.git"
-        dest: "{{ home }}/dev/javascript/streams"
-      - repo: "https://github.com/jadesrochers/subprocess.git"
-        dest: "{{ home }}/dev/javascript/subprocess"
-      - repo: "https://github.com/jadesrochers/datapulse.git"
-        dest: "{{ home }}/dev/javascript/datapulse"
-      - repo: "https://github.com/jadesrochers/fpstreamline.git"
-        dest: "{{ home }}/dev/javascript/fpstreamline"
-      - repo: "https://github.com/jadesrochers/functionalmonads.git"
-        dest: "{{ home }}/dev/javascript/functionalmonads"
-      - repo: "https://github.com/jadesrochers/filereworker.git"
-        dest: "{{ home }}/dev/javascript/filereworker"
-      - repo: "https://github.com/jadesrochers/checksettings.git"
-        dest: "{{ home }}/dev/javascript/checksettings"
-      - repo: "https://github.com/jadesrochers/personal_site.git"
-        dest: "{{ home }}/dev/javascript/react/personal_site"
-      - repo: "https://github.com/jadesrochers/ansible_kubernetes_digitalocean.git"
-        dest: "{{ home }}/dev/ansible/ansible_kubernetes_digitalocean"
-      - repo: "https://github.com/jadesrochers/shellscripts.git"
-        dest: "{{ home }}/dev/shellscripts"
       - repo: "https://github.com/jadesrochers/Tutorial_Notes.git"
         dest: "{{ home }}/Tutorial_Notes"
+
       - repo: "https://github.com/jadesrochers/General_Notes.git"
         dest: "{{ home }}/General_Notes"
-      - repo: "https://github.com/jadesrochers/zillowdata_todb.git"
-        dest: "{{ home }}/dev/javascript/zillowdata_todb"
 
+
+      - repo: "https://github.com/jadesrochers/mongosimple.git"
+        dest: "{{ home }}/dev/javascript/node_packages/mongosimple"
+
+      - repo: "https://github.com/jadesrochers/streams.git"
+        dest: "{{ home }}/dev/javascript/node_packages/streams"
+
+      - repo: "https://github.com/jadesrochers/subprocess.git"
+        dest: "{{ home }}/dev/javascript/node_packages/subprocess"
+
+      - repo: "https://github.com/jadesrochers/datapulse.git"
+        dest: "{{ home }}/dev/javascript/node_packages/datapulse"
+
+      - repo: "https://github.com/jadesrochers/fpstreamline.git"
+        dest: "{{ home }}/dev/javascript/node_packages/fpstreamline"
+
+      - repo: "https://github.com/jadesrochers/functionalmonads.git"
+        dest: "{{ home }}/dev/javascript/node_packages/functionalmonads"
+
+      - repo: "https://github.com/jadesrochers/filereworker.git"
+        dest: "{{ home }}/dev/javascript/node_packages/filereworker"
+
+      - repo: "https://github.com/jadesrochers/checksettings.git"
+        dest: "{{ home }}/dev/javascript/node_packages/checksettings"
+
+      - repo: "https://github.com/jadesrochers/personal_site.git"
+        dest: "{{ home }}/dev/javascript/react/ps"
+
+      - repo: "https://github.com/jadesrochers/ansible_kubernetes_digitalocean.git"
+        dest: "{{ home }}/dev/ansible/ansible_kubernetes_digitalocean"
+
+      - repo: "https://github.com/jadesrochers/shellscripts.git"
+        dest: "{{ home }}/dev/shellscripts"
+
+      - repo: "https://github.com/jadesrochers/zillowdata_todb.git"
+        dest: "{{ home }}/dev/javascript/react/ps/backend/datatodb"
+
+
+      - repo: "https://github.com/jadesrochers/formbuilder.git"
+        dest: "{{ home }}/dev/javascript/component_packages/formbuilder"
+
+      - repo: "https://github.com/jadesrochers/legends.git"
+        dest: "{{ home }}/dev/javascript/component_packages/legends"
+
+      - repo: "https://github.com/jadesrochers/selectbox.git"
+        dest: "{{ home }}/dev/javascript/component_packages/selectbox"
+
+      - repo: "https://github.com/jadesrochers/histograminteract.git"
+        dest: "{{ home }}/dev/javascript/component_packages/histograminteract"
+
+      - repo: "https://github.com/jadesrochers/reacthelpers.git"
+        dest: "{{ home }}/dev/javascript/component_packages/reacthelpers"
+
+      - repo: "https://github.com/jadesrochers/geomap.git"
+        dest: "{{ home }}/dev/javascript/component_packages/geomap"
 
