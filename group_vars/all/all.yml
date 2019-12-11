@@ -10,4 +10,5 @@ node_globals:
   - eslint
   - typescript
   - npm-check-updates
+  - gatsby-cli
 

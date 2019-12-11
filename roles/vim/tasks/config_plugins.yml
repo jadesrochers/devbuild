@@ -10,11 +10,15 @@
       state: directory
       mode: 0755
 
+  - name: output from state of coc.nvim
+    debug: 
+      var: nviminstall
+
   - name: download and unpack the coc.nvim extension
     shell: "curl --fail -L https://github.com/neoclide/coc.nvim/archive/release.tar.gz|tar xzfv -"
     args:
       chdir: "{{ home }}/.vim/pack/coc/start"
-    when: nviminstall.state.exists == false
+    when: nviminstall.stat.exists == false
 
   - name: Copy the script to download/update all vim git packages.
     copy:

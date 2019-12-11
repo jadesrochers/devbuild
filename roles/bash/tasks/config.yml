@@ -235,6 +235,13 @@
     become: yes
     become_user: jad
     when: homegit.stat.exists == false
+    
+  - name: Get the bash and vim files from my repo for these
+    shell: git pull
+    args:
+      chdir: "{{ home }}"
+    become: yes
+    become_user: jad
 
   - name: Add configuration to make the default editor vim
     lineinfile:
@@ -249,8 +256,10 @@
     command: setxkbmap -option ctrl:nocaps
 
   - name: Check if fzf appears to have been installed
-    shell: grep -E -i -l "fzf" {{ home }}/.bashrc
+    shell: awk /fzf/ {{ home }}/.bashrc 
     register: fzfgrep
+
+    # shell: grep -E -i -l "fzf" {{ home }}/.bashrc 
 
   - name: Install fzf fuzzy finder. Should add its own line to .bashrc.
     shell: "{{ home }}/.fzf/install --all"
@@ -267,8 +276,8 @@
   - name: change ownership and permission on z.sh
     file:
       path: /usr/local/bin/z.sh
-      group: {{ user }}
-      owner: {{ user }}
+      group: "{{ username }}"
+      owner: "{{ username }}"
       mode: 0754
 
   - name: Add path to z.sh in bashrc

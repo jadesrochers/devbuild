@@ -10,8 +10,8 @@
   - name: Set this node version as default when all shells start
     shell: bash -ic "nvm alias default {{ node_version }}"
 
-  # These will be installed globally for this user
-  - name: Set this node version as default when all shells start
+  # These npm packages will be installed globally for this user
+  - name: Install useful global packages (react-app, eslint, gatsby)
     shell: bash -ic "npm install --global {{ item }}"
     with_items: "{{ node_globals }}"
 
