@@ -1,0 +1,14 @@
+Host *
+    ServerAliveInterval 120
+    TCPKeepAlive yes
+    IdentitiesOnly yes
+
+Host jadesrochers
+    Hostname github.com
+    ForwardAgent yes
+    IdentityFile ~/.ssh/jad-github-2024-08
+
+Host jdesrochers_re
+    Hostname github.com
+    ForwardAgent yes
+    IdentityFile ~/.ssh/github_access_b
