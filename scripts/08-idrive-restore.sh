@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+: "${REAL_USER:?Must set REAL_USER}" "${REAL_HOME:?Must set REAL_HOME}"
 
 echo ">>> iDrive Backup Restore Setup"
 echo ""
@@ -20,11 +21,11 @@ IDRIVE_DIR="$REAL_HOME/idrive"
 
 if [ ! -d "$IDRIVE_DIR" ]; then
     echo ">>> Downloading iDrive Linux client..."
-    TMPDIR=$(mktemp -d)
-    curl -fsSL -o "$TMPDIR/IDriveForLinux.zip" \
+    WORK_DIR=$(mktemp -d)
+    curl -fsSL -o "$WORK_DIR/IDriveForLinux.zip" \
         "https://www.idrivedownloads.com/downloads/linux/download-for-linux/LinuxScripts/IDriveForLinux.zip"
-    sudo -u "$REAL_USER" unzip -qo "$TMPDIR/IDriveForLinux.zip" -d "$REAL_HOME/"
-    rm -rf "$TMPDIR"
+    sudo -u "$REAL_USER" unzip -qo "$WORK_DIR/IDriveForLinux.zip" -d "$REAL_HOME/"
+    rm -rf "$WORK_DIR"
     echo "iDrive client extracted to $IDRIVE_DIR"
 else
     echo "iDrive directory already exists, skipping download."

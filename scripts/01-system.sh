@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+: "${SCRIPT_DIR:?Must set SCRIPT_DIR (run via setup.sh or export manually)}"
 
 echo ">>> Updating system packages..."
 apt-get update

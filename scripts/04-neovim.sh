@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+: "${REAL_USER:?Must set REAL_USER}" "${REAL_HOME:?Must set REAL_HOME}" "${SCRIPT_DIR:?Must set SCRIPT_DIR}"
 
 echo ">>> Installing Neovim (unstable PPA)..."
 add-apt-repository -y ppa:neovim-ppa/unstable

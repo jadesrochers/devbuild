@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+: "${REAL_USER:?Must set REAL_USER}" "${REAL_HOME:?Must set REAL_HOME}"
 
 echo ">>> Cloning repositories..."
 
@@ -7,7 +8,12 @@ clone_if_missing() {
     local repo_url="$1"
     local dest="$2"
     if [ ! -d "$dest/.git" ]; then
-        sudo -u "$REAL_USER" git clone "$repo_url" "$dest"
+        if sudo -u "$REAL_USER" git clone "$repo_url" "$dest"; then
+            echo "$(basename "$dest") cloned successfully."
+        else
+            echo "WARNING: Failed to clone $(basename "$dest"). SSH keys may not be in place yet."
+            echo "         Restore keys via iDrive first, then re-run: sudo -E bash scripts/07-repos.sh"
+        fi
     else
         echo "$(basename "$dest") already cloned, skipping."
     fi

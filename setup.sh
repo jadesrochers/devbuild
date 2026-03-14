@@ -11,7 +11,7 @@ fi
 
 # Preserve the real user (not root) for user-level operations
 REAL_USER="${SUDO_USER:-$USER}"
-REAL_HOME=$(eval echo "~$REAL_USER")
+REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
 
 export REAL_USER REAL_HOME SCRIPT_DIR
 

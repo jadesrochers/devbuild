@@ -72,8 +72,10 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# --- SSH agent ---
-eval $(ssh-agent -s) &> /dev/null
+# --- SSH agent (reuse existing if available) ---
+if [ -z "${SSH_AUTH_SOCK:-}" ]; then
+    eval $(ssh-agent -s) &> /dev/null
+fi
 # Add keys that exist (won't error on missing keys)
 for key in ~/.ssh/jad-github-* ~/.ssh/github_access_*; do
     [ -f "$key" ] && ssh-add "$key" &> /dev/null
