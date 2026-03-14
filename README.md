@@ -1,36 +1,55 @@
-## Dev machine build -  
-A playbook composed of several roles to build my dev machine  
-from just a fresh ubuntu install.  
+# Dev Machine Setup
 
-### Need to do a few things first -  
-Install the ubuntu system.
-I usually do a light install with the net installer.  
+Shell scripts to provision a fresh Ubuntu install with my full development environment.
 
+## Quick Start
 
-#### Need git and ansible to get going -  
-These need to be installed first so you can get the  
-playbook and then run it.
-I considered a network boot with image built from packer but I  
-don't do this often enough to make that worth it.  
-#### The git configuration is in the playbook -  
-Variables for it configured in group_vars/all/all.yml
+After a fresh Ubuntu Desktop install:
 
-#### Script gets all the vim add ons -  
-If you want to change them, edit the script   
-roles/vim/files/vimplug_update.sh
+```bash
+# Install git (may already be present)
+sudo apt install -y git
 
-#### Key configs are under version control -  
-.bashrc, .vimrc.
-Can always change locally, but anything you want a part of the  
-standard setup should be committed.  
+# Clone this repo (use HTTPS initially since SSH keys aren't set up yet)
+git clone https://github.com/jadesrochers/dev_machine.git
+cd dev_machine
 
-#### Run the playbook with sudo -  
-The playbook will use sudo/regular user but needs to have  
-sudo permission for lots of tasks, so run:
-sudo ansible-playbook devbuild.yml
+# Run everything
+sudo bash setup.sh
+```
 
-### Getting dropbox going is not part of the playbook -  
-Also something a lot of people probably don't use.
-Since this requires some GUI work it is best to run afterwards.  
-dropbox start -i && dropbox autostart y  
+## What It Does
 
+| Script | Purpose |
+|--------|---------|
+| `01-system.sh` | System update, core packages, Caps Lock → Ctrl |
+| `02-shell.sh` | bashrc, fzf, ripgrep, git config, SSH config |
+| `03-development.sh` | Docker, Python, NVM/Node.js, Java |
+| `04-neovim.sh` | Neovim (unstable PPA), plugins, LSP, Copilot |
+| `05-applications.sh` | Brave, Firefox, GIMP, digiKam, Hugin, LibreOffice, VLC |
+| `06-desktop.sh` | JetBrains Mono font, GNOME extensions |
+| `07-repos.sh` | Clone General_Notes and Tutorial_Notes |
+| `08-idrive-restore.sh` | iDrive setup for restoring keys and photos |
+
+## Running Individual Scripts
+
+Each script can be run independently:
+
+```bash
+sudo bash scripts/04-neovim.sh
+```
+
+The scripts use `REAL_USER` and `REAL_HOME` env vars (set by `setup.sh`). When running individually:
+
+```bash
+export REAL_USER=$USER REAL_HOME=$HOME SCRIPT_DIR=$(pwd)
+sudo -E bash scripts/04-neovim.sh
+```
+
+## Post-Setup Manual Steps
+
+1. **iDrive restore**: Follow the prompts from `08-idrive-restore.sh` to restore SSH keys and photos
+2. **Neovim**: Run `:Copilot auth` and `:Mason` on first launch
+3. **Terminal font**: Set to "JetBrains Mono" in terminal preferences
+4. **GNOME extensions**: Install Dash to Dock and Clipboard Indicator via Extension Manager
+5. **Log out and back in** for docker group and keyboard changes to take effect

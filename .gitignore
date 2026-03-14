@@ -1,2 +1,4 @@
-*.sw[pon]
-
+*.swp
+*.swo
+*~
+.DS_Store
